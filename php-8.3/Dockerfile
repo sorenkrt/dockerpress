@@ -1,4 +1,4 @@
-FROM bitnami/minideb:latest
+FROM bitnami/minideb:bookworm
 
 LABEL name="DockerPress"
 LABEL version="3.0.0"
