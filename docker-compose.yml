@@ -1,0 +1,43 @@
+services:
+  db:
+    image: mysql:8.4
+    container_name: dockerpress_mysql
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "dbexbeauty", "-u", "root", "-p$$MYSQL_ROOT_PASSWORD"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
+
+  wordpress:
+    build:
+      context: .
+      dockerfile: php-8.0/Dockerfile
+    image: dockerpresswp:latest
+    container_name: dockerpress_wordpress
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - wordpress_data:/var/www/html
+    depends_on:
+      dbexbeauty:
+        condition: service_healthy
+  
+  redis:
+    image: redis:7-alpine
+    container_name: dockerpress_redis
+    restart: unless-stopped
+	
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  wordpress_data:
+  db_data:
