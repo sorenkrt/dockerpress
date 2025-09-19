@@ -47,7 +47,7 @@ RUN apt-get update \
 	zip \
 	unzip \
 	git \
-	webp \
+	libwebp-dev \
 	graphicsmagick \
 	imagemagick \
 	zlib1g \
