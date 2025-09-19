@@ -29,37 +29,33 @@ EXPOSE "80/tcp"
 EXPOSE "7080/tcp"
 
 # Install System Libraries
-RUN apt-get update \
-	&& \
-	apt-get install -y --no-install-recommends \
-	sudo \
-	curl \
-	cron \
-	less \
-	sysvbanner \
-	wget \
-	nano \
-	htop \
-	ghostscript \
-	memcached \
-  	libmemcached-dev \
-  	libmemcached-tools \
-	zip \
-	unzip \
-	git \
-	webp \
-	libwebp6 \
-	memcached \
-	libmemcached-tools \
-	graphicsmagick \
-	imagemagick \
-	zlib1g \
-	inetutils-ping \
-	libxml2 \
-	default-mysql-client\
-	&& apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
-	&& rm -rf /var/lib/apt/lists/* \
-	&& sudo apt-get clean
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    sudo \
+    curl \
+    cron \
+    less \
+    sysvbanner \
+    wget \
+    nano \
+    htop \
+    ghostscript \
+    memcached \
+    libmemcached-dev \
+    libmemcached-tools \
+    zip \
+    unzip \
+    git \
+    webp \
+    libwebp6 \
+    graphicsmagick \
+    imagemagick \
+    zlib1g \
+    inetutils-ping \
+    libxml2 \
+    default-mysql-client && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 # Make sure we have required tools
 RUN install_packages \
