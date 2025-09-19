@@ -1,4 +1,4 @@
-FROM bitnami/minideb:buster
+FROM bitnami/minideb:latest
 
 LABEL name="DockerPress"
 LABEL version="3.0.0"
@@ -32,11 +32,31 @@ EXPOSE "7080/tcp"
 RUN apt-get update \
 	&& \
 	apt-get install -y --no-install-recommends \
-		sudo \
-		curl \
-		nano \
-		wget \
-		git \
+	sudo \
+	curl \
+	cron \
+	less \
+	sysvbanner \
+	wget \
+	nano \
+	htop \
+	ghostscript \
+	memcached \
+  	libmemcached-dev \
+  	libmemcached-tools \
+	zip \
+	unzip \
+	git \
+	webp \
+	libwebp6 \
+	memcached \
+	libmemcached-tools \
+	graphicsmagick \
+	imagemagick \
+	zlib1g \
+	inetutils-ping \
+	libxml2 \
+	default-mysql-client\
 	&& apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
 	&& rm -rf /var/lib/apt/lists/* \
 	&& sudo apt-get clean
