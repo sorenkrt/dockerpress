@@ -19,6 +19,8 @@ ENV WORDPRESS_DB_PORT 3306
 ENV APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE="1"
 ENV DEBIAN_FRONTEND="noninteractive"
 ENV DISABLE_WP_CRON=true
+ENV LSPHP_VERSION "lsphp84"
+ENV PHP_VERSION "8.4"
 
 # HTTP port
 EXPOSE "80/tcp"
@@ -91,36 +93,36 @@ RUN install_packages \
 
 # Install the PHP
 RUN install_packages \
-	"lsphp80"
+	"${LSPHP_VERSION}"
 
 # Install PHP modules
 RUN install_packages \
-	"lsphp80-apcu" \
-	"lsphp80-common" \
-	"lsphp80-curl" \
-	"lsphp80-igbinary" \
-	"lsphp80-imagick" \
-	"lsphp80-imap" \
-	"lsphp80-intl" \
-	"lsphp80-ldap" \
-	"lsphp80-memcached" \
-	"lsphp80-msgpack" \
-	"lsphp80-mysql" \
-	"lsphp80-opcache" \
-	"lsphp80-pear" \
-	"lsphp80-pgsql" \
-	"lsphp80-pspell" \
-	"lsphp80-redis" \
-	"lsphp80-sqlite3" \
-	"lsphp80-tidy"
+	"${LSPHP_VERSION}-apcu" \
+	"${LSPHP_VERSION}-common" \
+	"${LSPHP_VERSION}-curl" \
+	"${LSPHP_VERSION}-igbinary" \
+	"${LSPHP_VERSION}-imagick" \
+	"${LSPHP_VERSION}-imap" \
+	"${LSPHP_VERSION}-intl" \
+	"${LSPHP_VERSION}-ldap" \
+	"${LSPHP_VERSION}-memcached" \
+	"${LSPHP_VERSION}-msgpack" \
+	"${LSPHP_VERSION}-mysql" \
+	"${LSPHP_VERSION}-opcache" \
+	"${LSPHP_VERSION}-pear" \
+	"${LSPHP_VERSION}-pgsql" \
+	"${LSPHP_VERSION}-pspell" \
+	"${LSPHP_VERSION}-redis" \
+	"${LSPHP_VERSION}-sqlite3" \
+	"${LSPHP_VERSION}-tidy"
 
 # Set the default PHP CLI
 RUN ln --symbolic --force \
-	"/usr/local/lsws/lsphp80/bin/lsphp" \
+	"/usr/local/lsws/${LSPHP_VERSION}/bin/lsphp" \
 	"/usr/local/lsws/fcgi-bin/lsphp5"
 
 RUN ln --symbolic --force \
-	"/usr/local/lsws/lsphp80/bin/php8.0" \
+	"/usr/local/lsws/${LSPHP_VERSION}/bin/php${PHP_VERSION}" \
 	"/usr/bin/php"
 
 # Install the certificates
@@ -133,15 +135,15 @@ RUN install_packages \
 	"tzdata"
 
 # PHP Settings
-RUN  sed -i 's/upload_max_filesize = 2M/upload_max_filesize = 128M/g' /usr/local/lsws/lsphp80/etc/php/8.0/litespeed/php.ini
-RUN sed -i 's/post_max_size = 8M/post_max_size = 256M/g' /usr/local/lsws/lsphp80/etc/php/8.0/litespeed/php.ini
-RUN sed -i 's/memory_limit = 128M/memory_limit = 512M/g' /usr/local/lsws/lsphp80/etc/php/8.0/litespeed/php.ini
+RUN  sed -i 's/upload_max_filesize = 2M/upload_max_filesize = 128M/g' /usr/local/lsws/${LSPHP_VERSION}/etc/php/${PHP_VERSION}/litespeed/php.ini
+RUN sed -i 's/post_max_size = 8M/post_max_size = 256M/g' /usr/local/lsws/${LSPHP_VERSION}/etc/php/${PHP_VERSION}/litespeed/php.ini
+RUN sed -i 's/memory_limit = 128M/memory_limit = 512M/g' /usr/local/lsws/${LSPHP_VERSION}/etc/php/${PHP_VERSION}/litespeed/php.ini
 
-COPY php-8.0/config/opcache.ini /usr/local/lsws/lsphp80/etc/php/8.0/mods-available/opcache.ini
+COPY php-8.4/config/opcache.ini /usr/local/lsws/${LSPHP_VERSION}/etc/php/${PHP_VERSION}/mods-available/opcache.ini
 
 RUN touch /var/www/.opcache
 
-COPY php-8.0/memcached.conf /etc/memcached.conf
+COPY php-8.4/memcached.conf /etc/memcached.conf
 
 # Create the directories
 RUN mkdir --parents \
@@ -164,12 +166,12 @@ RUN chown --recursive "lsadm:lsadm" \
 
 # Configure the admin interface
 COPY --chown="lsadm:lsadm" \
-	"php-8.0/litespeed/admin_config.conf" \
+	"php-8.4/litespeed/admin_config.conf" \
 	"/usr/local/lsws/admin/conf/admin_config.conf"
 
 # Configure the server
 COPY --chown="lsadm:lsadm" \
-	"php-8.0/litespeed/httpd_config.conf" \
+	"php-8.4/litespeed/httpd_config.conf" \
 	"/usr/local/lsws/conf/httpd_config.conf"
 
 # Create the virtual host folders
@@ -181,7 +183,7 @@ RUN mkdir --parents \
 
 # Configure the virtual host
 COPY --chown="lsadm:lsadm" \
-	"php-8.0/litespeed/vhconf.conf" \
+	"php-8.4/litespeed/vhconf.conf" \
 	"/usr/local/lsws/conf/vhosts/wordpress/vhconf.conf"
 
 # Set up the virtual host configuration permissions
