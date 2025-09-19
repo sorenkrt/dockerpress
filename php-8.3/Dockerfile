@@ -139,11 +139,11 @@ RUN  sed -i 's/upload_max_filesize = 2M/upload_max_filesize = 128M/g' /usr/local
 RUN sed -i 's/post_max_size = 8M/post_max_size = 256M/g' /usr/local/lsws/${LSPHP_VERSION}/etc/php/${PHP_VERSION}/litespeed/php.ini
 RUN sed -i 's/memory_limit = 128M/memory_limit = 512M/g' /usr/local/lsws/${LSPHP_VERSION}/etc/php/${PHP_VERSION}/litespeed/php.ini
 
-COPY php-8.4/config/opcache.ini /usr/local/lsws/${LSPHP_VERSION}/etc/php/${PHP_VERSION}/mods-available/opcache.ini
+COPY php-8.3/config/opcache.ini /usr/local/lsws/${LSPHP_VERSION}/etc/php/${PHP_VERSION}/mods-available/opcache.ini
 
 RUN touch /var/www/.opcache
 
-COPY php-8.4/memcached.conf /etc/memcached.conf
+COPY php-8.3/memcached.conf /etc/memcached.conf
 
 # Create the directories
 RUN mkdir --parents \
@@ -166,12 +166,12 @@ RUN chown --recursive "lsadm:lsadm" \
 
 # Configure the admin interface
 COPY --chown="lsadm:lsadm" \
-	"php-8.4/litespeed/admin_config.conf" \
+	"php-8.3/litespeed/admin_config.conf" \
 	"/usr/local/lsws/admin/conf/admin_config.conf"
 
 # Configure the server
 COPY --chown="lsadm:lsadm" \
-	"php-8.4/litespeed/httpd_config.conf" \
+	"php-8.3/litespeed/httpd_config.conf" \
 	"/usr/local/lsws/conf/httpd_config.conf"
 
 # Create the virtual host folders
@@ -183,7 +183,7 @@ RUN mkdir --parents \
 
 # Configure the virtual host
 COPY --chown="lsadm:lsadm" \
-	"php-8.4/litespeed/vhconf.conf" \
+	"php-8.3/litespeed/vhconf.conf" \
 	"/usr/local/lsws/conf/vhosts/wordpress/vhconf.conf"
 
 # Set up the virtual host configuration permissions
