@@ -1,5 +1,5 @@
 services:
-  db:
+  db1:
     image: mysql:8.4
     container_name: dockerpress_mysql
     restart: unless-stopped
@@ -7,7 +7,7 @@ services:
     volumes:
       - db_data:/var/lib/mysql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "db", "-u", "root", "-p$$MYSQL_ROOT_PASSWORD"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "db1", "-u", "root", "-p$$MYSQL_ROOT_PASSWORD"]
       interval: 10s
       timeout: 5s
       retries: 5
