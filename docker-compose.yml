@@ -5,7 +5,7 @@ services:
     restart: unless-stopped
     env_file: .env
     volumes:
-      - db_data:/var/lib/mysql
+      - db_data1:/var/lib/mysql
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "db1", "-u", "root", "-p$$MYSQL_ROOT_PASSWORD"]
       interval: 10s
@@ -22,7 +22,7 @@ services:
     restart: unless-stopped
     env_file: .env
     volumes:
-      - wordpress_data:/var/www/html
+      - wordpress_data1:/var/www/html
     depends_on:
       db1:
         condition: service_healthy
@@ -39,5 +39,5 @@ services:
       retries: 5
 
 volumes:
-  wordpress_data:
-  db_data:
+  wordpress_data1:
+  db_data1:
