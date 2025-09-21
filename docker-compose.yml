@@ -24,7 +24,7 @@ services:
     volumes:
       - wordpress_data:/var/www/html
     depends_on:
-      db:
+      db1:
         condition: service_healthy
   
   redis:
