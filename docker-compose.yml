@@ -4,8 +4,13 @@ services:
     container_name: dockerpress_mysql
     restart: unless-stopped
     env_file: .env
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     volumes:
-      - db_data5:/var/lib/mysql
+      - db_data:/var/lib/mysql
     ports:
     - "3306:3306"
     healthcheck:
@@ -24,7 +29,7 @@ services:
     restart: unless-stopped
     env_file: .env
     volumes:
-      - wordpress_data5:/var/www/html
+      - wordpress_data:/var/www/html
     depends_on:
       dbex:
         condition: service_healthy
@@ -40,5 +45,5 @@ services:
       retries: 5
 
 volumes:
-  wordpress_data5:
-  db_data5:
+  wordpress_data:
+  db_data:
