@@ -31,7 +31,6 @@ services:
     image: redis:7-alpine
     container_name: dockerpress_redis
     restart: unless-stopped
-	
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 10s
