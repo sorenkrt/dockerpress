@@ -1,6 +1,8 @@
+version: "3.8"
 services:
   dbex:
-    image: mysql:8.4
+    # Use the official MySQL 8.0 image (8.4 tag does not exist on Docker Hub)
+    image: mysql:8.0
     container_name: dockerpress_mysql
     restart: unless-stopped
     env_file: .env
@@ -14,7 +16,8 @@ services:
     ports:
     - "3306:3306"
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$$MYSQL_ROOT_PASSWORD"]
+      # Use env substitution for the root password in the healthcheck
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
       interval: 30s
       timeout: 5s
       retries: 5
