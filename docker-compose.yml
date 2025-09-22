@@ -5,11 +5,11 @@ services:
     restart: unless-stopped
     env_file: .env
     volumes:
-      - db_data3:/var/lib/mysql
+      - db_data4:/var/lib/mysql
     ports:
     - "3306:3306"
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "db1", "-u", "root", "-p$$MYSQL_ROOT_PASSWORD"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$$MYSQL_ROOT_PASSWORD"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -24,7 +24,7 @@ services:
     restart: unless-stopped
     env_file: .env
     volumes:
-      - wordpress_data3:/var/www/html
+      - wordpress_data4:/var/www/html
     depends_on:
       db1:
         condition: service_healthy
@@ -40,5 +40,5 @@ services:
       retries: 5
 
 volumes:
-  wordpress_data3:
-  db_data3:
+  wordpress_data4:
+  db_data4:
