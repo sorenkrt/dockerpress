@@ -1,5 +1,5 @@
 services:
-  db1:
+  dbex:
     image: mysql:8.4
     container_name: dockerpress_mysql
     restart: unless-stopped
@@ -26,7 +26,7 @@ services:
     volumes:
       - wordpress_data5:/var/www/html
     depends_on:
-      db1:
+      dbex:
         condition: service_healthy
   
   redis:
