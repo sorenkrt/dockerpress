@@ -70,6 +70,33 @@ function setup_mysql_optimize() {
   sed -i -e "s/WORDPRESS_DB_PORT/$WORDPRESS_DB_PORT/g" /usr/local/bin/mysql-optimize
 }
 
+function wait_for_db() {
+  : "Waiting for database to be available"
+  local host=${WORDPRESS_DB_HOST:-dbex}
+  local port=${WORDPRESS_DB_PORT:-3306}
+  local timeout=${DB_WAIT_TIMEOUT:-60}
+  local start=$(date +%s)
+
+  echo "Waiting for database $host:$port (timeout: ${timeout}s) ..."
+
+  while true; do
+    # Try TCP connection (use bash /dev/tcp if available)
+    if (</dev/tcp/$host/$port) >/dev/null 2>&1; then
+      echo "Database $host:$port reachable"
+      return 0
+    fi
+
+    now=$(date +%s)
+    elapsed=$((now - start))
+    if [ "$elapsed" -ge "$timeout" ]; then
+      echo "Timed out waiting for database after ${timeout}s"
+      return 1
+    fi
+
+    sleep 2
+  done
+}
+
 function create_wordpress_database() {
   if [ -n "$MYSQL_ROOT_PASSWORD" ]; then
     echo "Try create Database if not exists using root ..."
@@ -166,7 +193,11 @@ service cron start
 setup_mysql_optimize
 
 #### Creating Wordpress Database
-create_wordpress_database
+if wait_for_db; then
+  create_wordpress_database
+else
+  echo "ERROR: Database not reachable. Skipping database creation and continuing startup."
+fi
 
 # run wordpress installer
 install_wordpress
