@@ -26,7 +26,7 @@ services:
   wordpress:
     build:
       context: .
-      dockerfile: php-8.3/Dockerfile
+      dockerfile: php-7.4/Dockerfile
     image: dockerpresswp:latest
     container_name: ${container_name_wordpress}
     restart: unless-stopped
