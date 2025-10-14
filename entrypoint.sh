@@ -23,6 +23,15 @@ chmod 644 /var/log/litespeed/admin-access.log /var/log/litespeed/admin-error.log
 chmod +x /usr/local/lsws/admin/fcgi-bin/admin_php* || true
 chown -R lsadm:lsadm /usr/local/lsws/admin/fcgi-bin || true
 
+# Ensure admin tmp and runtime directories are writable by lsadm
+mkdir -p /usr/local/lsws/admin/tmp /usr/local/lsws/admin/logs
+chown -R lsadm:lsadm /usr/local/lsws/admin/tmp /usr/local/lsws/admin/logs
+chmod 750 /usr/local/lsws/admin/tmp /usr/local/lsws/admin/logs
+
+# Ensure admin cgid directory is writable
+chown -R lsadm:nogroup /usr/local/lsws/admin/cgid || true
+chmod 755 /usr/local/lsws/admin/cgid || true
+
 function finish() {
   /usr/local/lsws/bin/lswsctrl "stop"
   pkill "tail"
