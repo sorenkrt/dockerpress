@@ -165,6 +165,9 @@ COPY --chown="lsadm:lsadm" \
 	"php-8.3/litespeed/admin_config.conf" \
 	"/usr/local/lsws/admin/conf/admin_config.conf"
 
+# Expose admin port in Dockerfile
+EXPOSE "7082/tcp"
+
 # Configure the server
 COPY --chown="lsadm:lsadm" \
 	"php-8.3/litespeed/httpd_config.conf" \
