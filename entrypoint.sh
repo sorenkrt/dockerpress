@@ -6,6 +6,10 @@ service memcached start
 # remove default index.html if exists
 rm -f /var/www/html/index.html
 
+# fix LiteSpeed configuration directory permissions (required for vhost load)
+chown -R lsadm:lsadm /usr/local/lsws/conf
+chmod -R go-w /usr/local/lsws/conf
+
 function finish() {
   /usr/local/lsws/bin/lswsctrl "stop"
   pkill "tail"
