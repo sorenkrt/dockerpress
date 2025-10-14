@@ -10,6 +10,14 @@ rm -f /var/www/html/index.html
 chown -R lsadm:lsadm /usr/local/lsws/conf
 chmod -R go-w /usr/local/lsws/conf
 
+# Ensure admin html and log directories are writable/readable by lsadm
+chown -R lsadm:lsadm /usr/local/lsws/admin/html.open /var/log/litespeed || true
+chmod -R u+rwX,go+rX /usr/local/lsws/admin/html.open /var/log/litespeed || true
+# Create admin log files if missing and ensure ownership
+mkdir -p /var/log/litespeed
+touch /var/log/litespeed/admin-access.log /var/log/litespeed/admin-error.log || true
+chown lsadm:lsadm /var/log/litespeed/admin-access.log /var/log/litespeed/admin-error.log || true
+
 function finish() {
   /usr/local/lsws/bin/lswsctrl "stop"
   pkill "tail"
