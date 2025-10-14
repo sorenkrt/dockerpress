@@ -83,6 +83,10 @@ RUN install_packages \
 	"openlitespeed" && \
 	echo "cloud-docker" > "/usr/local/lsws/PLAT"
 
+# Fix for incorrect paths by creating symbolic links
+RUN ln -s /usr/local/lsws/admin /usr/local/lswsadmin
+RUN ln -s /usr/local/lsws/conf /usr/local/lswsconf
+
 # Install PageSpeed module
 RUN install_packages \
 	"ols-pagespeed"
@@ -164,6 +168,21 @@ RUN chown --recursive "lsadm:lsadm" \
 COPY --chown="lsadm:lsadm" \
 	"php-8.3/litespeed/admin_config.conf" \
 	"/usr/local/lsws/admin/conf/admin_config.conf"
+
+# Tune admin PHP to avoid heavy OPCache allocations (confined admin usage)
+RUN printf '\n; DockerPress admin overrides\nopcache.enable=0\nopcache.enable_cli=0\nopcache.jit=0\nopcache.jit_buffer_size=0\nopcache.memory_consumption=64\n' >> /usr/local/lsws/admin/conf/php.ini
+RUN sed -i 's|/usr/local/lswsadmin|/usr/local/lsws/admin|g' /usr/local/lsws/admin/conf/php.ini
+
+# Ensure admin PHP wrapper exports required environment overrides
+RUN rm /usr/local/lsws/admin/fcgi-bin/admin_php && \
+		printf '%s\n' \
+			'#!/bin/bash' \
+			'export LS_SERVER_ROOT=/usr/local/lsws' \
+			'export PHPRC=/usr/local/lsws/admin/conf' \
+			'export PHP_INI_SCAN_DIR=' \
+			'exec /usr/local/lsws/lsphp83/bin/lsphp "$@"' \
+			> /usr/local/lsws/admin/fcgi-bin/admin_php && \
+		chmod +x /usr/local/lsws/admin/fcgi-bin/admin_php
 
 # Expose admin port in Dockerfile
 EXPOSE "7082/tcp"

@@ -39,8 +39,8 @@ function finish() {
 
 function update_wp_config() {
   echo "Updating wp-config.php ..."
-  wp config set WP_SITEURL "https://$VIRTUAL_HOST" --add --type=constant
-  wp config set WP_HOME "https://$VIRTUAL_HOST" --add --type=constant
+  wp config set WP_SITEURL "http://$VIRTUAL_HOST" --add --type=constant
+  wp config set WP_HOME "http://$VIRTUAL_HOST" --add --type=constant
   wp config set DB_NAME $WORDPRESS_DB_NAME --add --type=constant
   wp config set DB_USER $WORDPRESS_DB_USER --add --type=constant
   wp config set DB_PASSWORD $WORDPRESS_DB_PASSWORD --add --type=constant
