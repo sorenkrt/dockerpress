@@ -34,7 +34,7 @@ services:
     volumes:
       - wordpress_data:/var/www/html
     ports:
-      - "7081:7080"  # Map host port 7080 to container port 7080
+      - "${LITE_PORT}:7080"  # Map host port 7080 to container port 7080
     depends_on:
       dbex:
         condition: service_healthy
