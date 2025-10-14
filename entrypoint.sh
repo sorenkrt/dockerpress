@@ -19,6 +19,10 @@ touch /var/log/litespeed/admin-access.log /var/log/litespeed/admin-error.log || 
 chown lsadm:lsadm /var/log/litespeed/admin-access.log /var/log/litespeed/admin-error.log || true
 chmod 644 /var/log/litespeed/admin-access.log /var/log/litespeed/admin-error.log || true
 
+# Ensure admin PHP binary is executable and accessible
+chmod +x /usr/local/lsws/admin/fcgi-bin/admin_php* || true
+chown -R lsadm:lsadm /usr/local/lsws/admin/fcgi-bin || true
+
 function finish() {
   /usr/local/lsws/bin/lswsctrl "stop"
   pkill "tail"
