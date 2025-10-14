@@ -33,6 +33,9 @@ services:
     env_file: .env
     volumes:
       - wordpress_data:/var/www/html
+    ports:
+      - "80:80"      # Map host port 80 to container port 80 for WordPress site
+      - "7080:7080"  # Map host port 7080 to container port 7080 for LiteSpeed webadmin
     depends_on:
       dbex:
         condition: service_healthy
