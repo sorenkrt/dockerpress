@@ -244,7 +244,8 @@ service memcached start
 # welcome to dockerpress
 sysvbanner dockerpress
 
-
+# Read the credentials
+cat '/usr/local/lsws/adminpasswd'
 
 # Tail the logs to stdout
 tail -f \
