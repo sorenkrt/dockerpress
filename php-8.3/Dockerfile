@@ -136,8 +136,8 @@ RUN install_packages \
 
 # PHP Settings
 RUN  sed -i 's/upload_max_filesize = 2M/upload_max_filesize = 128M/g' /usr/local/lsws/${LSPHP_VERSION}/etc/php/${PHP_VERSION}/litespeed/php.ini
-RUN sed -i 's/post_max_size = 8M/post_max_size = 256M/g' /usr/local/lsws/${LSPHP_VERSION}/etc/php/${PHP_VERSION}/litespeed/php.ini
-RUN sed -i 's/memory_limit = 128M/memory_limit = 512M/g' /usr/local/lsws/${LSPHP_VERSION}/etc/php/${PHP_VERSION}/litespeed/php.ini
+RUN sed -i 's/post_max_size = 8M/post_max_size = 512M/g' /usr/local/lsws/${LSPHP_VERSION}/etc/php/${PHP_VERSION}/litespeed/php.ini
+RUN sed -i 's/memory_limit = 128M/memory_limit = 1G/g' /usr/local/lsws/${LSPHP_VERSION}/etc/php/${PHP_VERSION}/litespeed/php.ini
 
 COPY php-8.3/config/opcache.ini /usr/local/lsws/${LSPHP_VERSION}/etc/php/${PHP_VERSION}/mods-available/opcache.ini
 
